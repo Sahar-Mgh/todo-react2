@@ -1,15 +1,18 @@
 import React, { useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { editTodo, deleteTodo, completeTodo } from '../redux/actions';
 
-const TodoItem = ({ todo, editTodo, deleteTodo, completeTodo }) => {
+const TodoItem = ({ todo }) => {
   const [isEditing, setIsEditing] = useState(false);
   const [newText, setNewText] = useState(todo.text);
+  const dispatch = useDispatch();
 
   const handleEdit = () => {
     setIsEditing(true);
   };
 
   const handleSave = () => {
-    editTodo(todo.id, newText);
+    dispatch(editTodo(todo.id, newText));
     setIsEditing(false);
   };
 
@@ -32,8 +35,8 @@ const TodoItem = ({ todo, editTodo, deleteTodo, completeTodo }) => {
           </span>
           <div>
             <button onClick={handleEdit} className="edit-button">Edit</button>
-            <button onClick={() => deleteTodo(todo.id)} className="delete-button">Delete</button>
-            <button onClick={() => completeTodo(todo.id)} className="complete-button">
+            <button onClick={() => dispatch(deleteTodo(todo.id))} className="delete-button">Delete</button>
+            <button onClick={() => dispatch(completeTodo(todo.id))} className="complete-button">
               {todo.completed ? 'Undo' : 'Complete'}
             </button>
           </div>
